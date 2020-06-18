@@ -2,10 +2,10 @@
 #define _kbd_lang
 
 extern
-const uint8_t _asciimap[128] PROGMEM;
+const uint8_t _asciimap[256] PROGMEM;
 
 #define SHIFT 0x80
-const uint8_t _asciimap[128] =
+const uint8_t _asciimap[256] =
 {
   0x00,             // NUL          0
   0x00,             // SOH
