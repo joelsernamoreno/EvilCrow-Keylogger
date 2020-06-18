@@ -23,7 +23,7 @@
 
 #if defined(_USING_HID)
 
-#define kbd_es_es
+#define kbd_en_us
 
 /*
 #define kbd_es_es

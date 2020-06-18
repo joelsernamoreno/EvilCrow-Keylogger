@@ -42,7 +42,7 @@ Only es_es and en_us are full-tested.
 
  */
 
-#define kbd_en_us
+//#define kbd_en_us
 
 #include "HID.h"
 

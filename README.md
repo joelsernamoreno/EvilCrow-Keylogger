@@ -87,7 +87,7 @@ Evil Crow Keylogger supports several layouts, the en_us layout is by default.
 
 Set up a new layout:
 
-* 0.- Open Keyboard/src/Keyboard.h with a text editor
+* 0.- Open Keyboard/src/Keyboard.cpp with a text editor
 
 * 1.- Change #define kbd_en_us to another layout. Example: #define kbd_es_es
 
