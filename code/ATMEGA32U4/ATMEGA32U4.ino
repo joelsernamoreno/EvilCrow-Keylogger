@@ -62,9 +62,9 @@ class KbdRptParser : public KeyboardReportParser {
 };
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
+  Keyboard.rawrelease(key, 0);
   SetModifiersArd();
   key_modifier = key|modifiersard,HEX;
-  Keyboard.rawrelease(key, 0);
   SDlog = SD.open("log.txt", FILE_WRITE);
 
   for (int i = 0; i < 256; i++) {
@@ -79,7 +79,6 @@ void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
 void KbdRptParser::OnKeyDown(uint8_t mod, uint8_t key) { 
   SetModifiers();
   Keyboard.rawpress(key, modifiers);
-  modifiers = 0;
 }
 
 void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
@@ -99,10 +98,10 @@ void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
     if (beforeMod.bmLeftAlt != afterMod.bmLeftAlt) {
         leftalt_status=!leftalt_status;
     }
-    if (beforeMod.bmLeftGUI != afterMod.bmLeftGUI) {
-        leftgui_status=!leftgui_status;
+    if(beforeMod.bmLeftGUI != afterMod.bmLeftGUI)  {
+        if(afterMod.bmLeftGUI) Keyboard.press(KEY_LEFT_GUI);
+        else Keyboard.release(KEY_LEFT_GUI);
     }
-
     if (beforeMod.bmRightCtrl != afterMod.bmRightCtrl) {
         rightctrl_status=!rightctrl_status;
     }

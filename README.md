@@ -67,21 +67,41 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 
 * 2.- Install pyserial: sudo pip install pyserial
 
-* 3.- Download and Install the Arduino IDE: https://www.arduino.cc/en/main/software
+## Automatic installation
 
-* 4.- Open Arduino IDE.
+* 0.- Install Platformio and Platformio Core: https://docs.platformio.org/en/latest/core/index.html
 
-* 5.- Go to File - Preferences. Locate the field "Additional Board Manager URLs:" Add "https://dl.espressif.com/dl/package_esp32_index.json" without quotes. Click "Ok"
+* 1.- Download keylogger-pio repository (This is a migration of Evil Crow Keylogger to platformio): git clone https://github.com/volca/keylogger-pio.git
 
-* 6.- Select Tools - Board - Boards Manager. Search for "esp32". Install "esp32 by Espressif system version 1.0.3". Click "Close".
+* 2.- Download source EvilCrow-Keylogger. Put the directory in same level with keylogger-pio: git clone https://github.com/joelsernamoreno/EvilCrow-Keylogger.git
 
-* 7.- Download/extract EvilCrow-Keylogger repository.
+* 3.- Add jumper GPIO0 to GND for ESP32-PICO
 
-* 8.- Copy the Keyboard and USB Host Shield libraries included in this repository to your Arduino library directory. 
+![Jumper](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/jumper.jpg)
+
+* 4.- Connect Evil Crow Keylogger via USB port
+
+* 5.- Go to the keylogger-pio directory: cd keylogger-pio
+
+* 6.- Run flash.bat or ./flash.sh to program 32u4 and esp32-pico
+
+## Manual installation
+
+* 0.- Download and Install the Arduino IDE: https://www.arduino.cc/en/main/software
+
+* 1.- Open Arduino IDE.
+
+* 2.- Go to File - Preferences. Locate the field "Additional Board Manager URLs:" Add "https://dl.espressif.com/dl/package_esp32_index.json" without quotes. Click "Ok"
+
+* 3.- Select Tools - Board - Boards Manager. Search for "esp32". Install "esp32 by Espressif system version 1.0.3". Click "Close".
+
+* 4.- Download/extract EvilCrow-Keylogger repository.
+
+* 5.- Copy the Keyboard and USB Host Shield libraries included in this repository to your Arduino library directory. 
 
 **NOTE:** The Keyboard library included in this repository has been modified, EvilCrow Keylogger needs this library to work.
 
-## Layout support
+### Layout support
 
 Evil Crow Keylogger supports several layouts, the en_us layout is by default.
 
@@ -106,7 +126,7 @@ You can use:
 
 * 2.- Save and close Keyboard.h
 
-## Upload the ESP32 code
+### Upload the ESP32 code
 
 To upload the ESP32 code into the keylogger, you can do this in different ways: You can use an Arduino, an FTDI or an ESP Flasher from April Brother.
 On this way I will use an Arduino to upload the ESP32 code.
@@ -131,7 +151,7 @@ Here you can see all the pins corresponding to ESP32:
 
 * 5.- Upload the code to the board.
 
-## Upload atmega32u4 code
+### Upload atmega32u4 code
 
 * 0.- Connect Evil Crow Keylogger via USB port.
 
