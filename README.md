@@ -78,7 +78,7 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 1. Go to the keylogger-pio directory: `cd keylogger-pio`
 1. Run `flash.bat` or `./flash.sh` to program 32u4 and esp32-pico
 
-**Note:** Please re-plugin Evil Crow Keylogger if you run the steps again. Because we didn't reset the ESP32-PICO to program mode.
+**Note:** Please re-plugin Evil Crow Keylogger if you run the steps again. Because the script can't reset ESP32-PICO to program mode.
 
 ## Manual installation
 
