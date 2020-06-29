@@ -136,9 +136,9 @@ Here you can see all the pins corresponding to ESP32:
 1. Open Arduino IDE.
 1. Open the ESP32.ino sketch.
 1. Select Tools
- * Board - "ESP32 Dev Module".
- * Flash Size - "4MB (32Mb)".
- * CPU Frequency - "80MHz".
+  * Board - "ESP32 Dev Module".
+  * Flash Size - "4MB (32Mb)".
+  * CPU Frequency - "80MHz".
 1. Connecting the Arduino device to the computer.
 1. Upload the code to the board.
 
