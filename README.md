@@ -69,21 +69,14 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 
 ## Automatic installation
 
-* 0.- Install Platformio and Platformio Core: https://docs.platformio.org/en/latest/core/index.html
-
-* 1.- Download keylogger-pio repository (This is a migration of Evil Crow Keylogger to platformio): git clone https://github.com/volca/keylogger-pio.git
-
-* 2.- Download source EvilCrow-Keylogger. Put the directory in same level with keylogger-pio: git clone https://github.com/joelsernamoreno/EvilCrow-Keylogger.git
-
-* 3.- Add jumper GPIO0 to GND for ESP32-PICO
-
+1. Install Platformio Core: https://docs.platformio.org/en/latest/core/index.html
+1. Download [keylogger-pio](https://github.com/volca/keylogger-pio.git) repository (This is a migration of Evil Crow Keylogger to platformio): `git clone https://github.com/volca/keylogger-pio.git`
+1. Download source [EvilCrow-Keylogger](https://github.com/joelsernamoreno/EvilCrow-Keylogger.git). Put the directory in same level with keylogger-pio: `git clone https://github.com/joelsernamoreno/EvilCrow-Keylogger.git`
+1. Add jumper GPIO0 to GND for ESP32-PICO
 ![Jumper](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/jumper.jpg)
-
-* 4.- Connect Evil Crow Keylogger via USB port
-
-* 5.- Go to the keylogger-pio directory: cd keylogger-pio
-
-* 6.- Run flash.bat or ./flash.sh to program 32u4 and esp32-pico
+1. Connect Evil Crow Keylogger via USB port
+1. Go to the keylogger-pio directory: `cd keylogger-pio`
+1. Run `flash.bat` or `./flash.sh` to program 32u4 and esp32-pico
 
 ## Manual installation
 
