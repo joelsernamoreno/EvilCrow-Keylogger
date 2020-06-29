@@ -130,21 +130,17 @@ Here you can see all the pins corresponding to ESP32:
 
 ![ESP32](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/esp32.PNG)
 
-* 0.- Wire the Keylogger with Arduino using the following pinout:
-
+1. Wire the Keylogger with Arduino using the following pinout:
 ![Flash](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/esp32-flash.PNG)
-
 ![Wire](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/wire.jpg)
-
-* 1.- Open Arduino IDE.
-
-* 2.- Open the ESP32.ino sketch.
-
-* 3.- Select Tools - Board - "ESP32 Dev Module".
-
-* 4.- Connecting the Arduino device to the computer.
-
-* 5.- Upload the code to the board.
+1. Open Arduino IDE.
+1. Open the ESP32.ino sketch.
+1. Select Tools
+   * Board - "ESP32 Dev Module".
+   * Flash Size - "4MB (32Mb)".
+   * CPU Frequency - "80MHz".
+1. Connecting the Arduino device to the computer.
+1. Upload the code to the board.
 
 ### Upload atmega32u4 code
 
