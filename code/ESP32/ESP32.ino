@@ -21,6 +21,8 @@ File logs;
 // Web Server
 WebServer server(80);
 
+const bool formatOnFail = true;
+
 void setup() {
   Serial.begin(115200);
   delay(500);
@@ -28,7 +30,7 @@ void setup() {
   WiFi.softAP(ssid, password);
 
   EEPROM.begin(4096);
-  SPIFFS.begin();
+  SPIFFS.begin(formatOnFail);
 
   logs = SPIFFS.open("/logs.txt", "a+");
 
