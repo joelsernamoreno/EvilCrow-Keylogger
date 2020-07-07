@@ -86,7 +86,7 @@ Now you can flash Atmega32u4 and ESP32-PICO in different ways:
 
 **Note:** Please re-plugin Evil Crow Keylogger if you run the steps again. Because the script can't reset ESP32-PICO to program mode.
 
-## Automatic installation with ESP flasher
+## Automatic installation with ESP Flasher
 
 Buy ESP Flasher: https://www.aliexpress.com/item/32556128986.html
 
