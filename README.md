@@ -67,6 +67,12 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 
 * 2.- Install pyserial: sudo pip install pyserial
 
+Now you can flash Atmega32u4 and ESP32-PICO in different ways:
+
+* Automatic installation
+* Automatic installation with ESP Flasher V4
+* Manual installation
+
 ## Automatic installation
 
 1. Install Platformio Core: https://docs.platformio.org/en/latest/core/index.html
@@ -79,6 +85,19 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 1. Run `flash.bat` or `./flash.sh` to program 32u4 and esp32-pico
 
 **Note:** Please re-plugin Evil Crow Keylogger if you run the steps again. Because the script can't reset ESP32-PICO to program mode.
+
+## Automatic installation with ESP flasher V4
+
+1. Install Platformio Core: https://docs.platformio.org/en/latest/core/index.html
+2. Download Keylogger-pio: https://github.com/volca/keylogger-pio/tree/prod (This is a migration of Evil Crow Keylogger to platformio)
+3. Download source EvilCrow-Keylogger. Extract the source code and name it as EvilCrow-Keylogger. Put the directory in same level with keylogger-pio
+4. Wire ESP Flasher and Evil Crow Keylogger
+
+![Keylogger ESP Flasher](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/keylogger-wired.jpg)
+
+5. Connect Evil Crow Keylogger and ESP Flasher to your laptop
+6. Open command line and change directory to keylogger-pio 
+7. Run flash.bat or ./flash.sh to program 32u4 and esp32-pico
 
 ## Manual installation
 
@@ -119,7 +138,7 @@ You can use:
 - kbd_pt_pt
 - kbd_tr_tr
 
-* 2.- Save and close Keyboard.h
+* 2.- Save and close Keyboard.cpp
 
 ### Upload the ESP32 code
 
