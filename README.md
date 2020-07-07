@@ -70,7 +70,7 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 Now you can flash Atmega32u4 and ESP32-PICO in different ways:
 
 * Automatic installation
-* Automatic installation with ESP Flasher V4
+* Automatic installation with ESP Flasher
 * Manual installation
 
 ## Automatic installation
@@ -86,7 +86,9 @@ Now you can flash Atmega32u4 and ESP32-PICO in different ways:
 
 **Note:** Please re-plugin Evil Crow Keylogger if you run the steps again. Because the script can't reset ESP32-PICO to program mode.
 
-## Automatic installation with ESP flasher V4
+## Automatic installation with ESP flasher
+
+Buy ESP Flasher here: https://www.aliexpress.com/item/32556128986.html
 
 1. Install Platformio Core: https://docs.platformio.org/en/latest/core/index.html
 2. Download Keylogger-pio: https://github.com/volca/keylogger-pio/tree/prod (This is a migration of Evil Crow Keylogger to platformio)
