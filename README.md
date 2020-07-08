@@ -39,7 +39,10 @@ Evil Crow Keylogger is a physical keylogger with the following hardware:
 * USB Host MAX3421
 * Hall sensor for unbrick device
 
-**NOTE:** Some keys or modifiers have not been implemented. I don't have time or material to test all the keyboards. If you have any errors, you can contact me by Twitter: @JoelSernaMoreno
+**NOTE:** 
+
+* Some keys or modifiers have not been implemented. I don't have time or material to test all the keyboards. If you have any errors, you can contact me by Twitter: @JoelSernaMoreno
+* All Keyloggers have been flashed firmware `EvilCrow-Keylogger` before shipping
 
 **Layouts:**
 
@@ -84,14 +87,14 @@ Now you can flash Atmega32u4 and ESP32-PICO in different ways:
 1. Go to the keylogger-pio directory: `cd keylogger-pio`
 1. Run `flash.bat` or `./flash.sh` to program 32u4 and esp32-pico
 
-**Note:** Please re-plugin Evil Crow Keylogger if you run the steps again. Because the script can't reset ESP32-PICO to program mode.
+**Note:** Please re-plug Evil Crow Keylogger if you run the steps again. Because the script can't reset ESP32-PICO to program mode.
 
 ## Automatic installation with ESP Flasher
 
 Buy ESP Flasher: https://www.aliexpress.com/item/32556128986.html
 
 1. Install Platformio Core: https://docs.platformio.org/en/latest/core/index.html
-2. Download Keylogger-pio: https://github.com/volca/keylogger-pio/tree/prod (This is a migration of Evil Crow Keylogger to platformio)
+2. Download Keylogger-pio: https://github.com/volca/keylogger-pio/tree/prod (This is a migration of Evil Crow Keylogger to platformio): `git clone -b prod https://github.com/volca/keylogger-pio.git keylogger-pio`
 3. Download source EvilCrow-Keylogger. Extract the source code and name it as EvilCrow-Keylogger. Put the directory in same level with keylogger-pio
 4. Wire ESP Flasher and Evil Crow Keylogger
 
