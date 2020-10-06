@@ -18,8 +18,8 @@ You can invite me for a coffee to further develop Low-Cost hacking devices. If y
 
 **For Sale at:**
 
-* Aliexpress: Coming soon...
-* Tindie: Coming soon...
+* [Aliexpress Shop](https://www.aliexpress.com/item/4001219974113.html)
+* [Tindie Shop](https://www.tindie.com/products/aprbrother/evilcrow-keylogger/)
 
 # Disclaimer
 
