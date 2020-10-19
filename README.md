@@ -28,6 +28,7 @@ You can invite me for a coffee to further develop Low-Cost hacking devices. If y
 	* Software requirements
 	* Layout support
 	* Automatic installation
+	* Automatic installation with ESP Flasher
 	* Manual installation
 
 4. First steps with Evil Crow Keylogger

@@ -75,7 +75,8 @@ void setup() {
 
          delay(DelayLength);
          DelayLength = defaultdelay;
-         cmd = "";  
+         cmd = ""; 
+         liveline = "";
       }
       DelayLength = settingsdefaultdelay;
       return 0;
