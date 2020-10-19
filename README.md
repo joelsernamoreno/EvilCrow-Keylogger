@@ -206,6 +206,30 @@ Evil Crow Keylogger also stores the log on the Micro SD card.
 
 **File:** log.txt
 
+## Keystroke Injection
+
+Keystroke injection attacks can me executed by navigating to the Live Payload tab. There you can write and run keystroke injection payloads written in simple script.
+
+The parameters allowed to create payloads are the following:
+
+* **print:** Example print Hello World
+
+* **println:** Example println Hello World
+
+* **press:** Example press 131 (This is the GUI key)
+
+* **release:** Example release
+
+* **rawpress:** Example rawpress 176 (This is the RETURN key)
+
+* **delay:** Example delay 3000
+
+To press more keys and modifiers you can use the following link: https://www.arduino.cc/reference/es/language/functions/usb/keyboard/keyboardmodifiers/
+
+**Payload example:**
+
+![Log](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/payload.PNG)
+
 # Unbrick Evil Crow Keylogger with Hall Sensor
 
 First, you’ll need to set the serial port to the bootloader. But that port is only visible when the board is in bootloader mode, so pull the reset line low twice quickly to invoke the bootloader reset feature. You can quickly press the reset button** twice. While the Evil Crow Keylogger is in the bootloader mode, change the ‘Tools > Serial Port’ menu to the bootloader COM port. Quick! You’ve only got eight seconds.
