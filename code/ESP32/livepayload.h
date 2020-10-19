@@ -61,7 +61,6 @@ const char LivePayload[] PROGMEM = R"=====(
         <ul>
             <a class="myButton" href="/">Menu</a>
             <a class="myButton" href="/livepayload">Live Payload</a>
-            <a class="myButton" href="/uploadpayload">Upload Payload</a>
             <a class="myButton" href="/viewlog">View Log</a>
             <a class="myButton" href="/delete">Delete Log</a>
         </ul>

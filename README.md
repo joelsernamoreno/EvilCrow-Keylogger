@@ -21,6 +21,20 @@ You can invite me for a coffee to further develop Low-Cost hacking devices. If y
 * [Aliexpress Shop](https://www.aliexpress.com/item/4001219974113.html)
 * [Tindie Shop](https://www.tindie.com/products/aprbrother/evilcrow-keylogger/)
 
+**Summary:**
+1. Disclaimer
+2. Introduction
+3. Installation
+	* Software requirements
+	* Layout support
+	* Automatic installation
+	* Manual installation
+
+4. First steps with Evil Crow Keylogger
+5. Use the Micro SD Slot
+6. Keystroke Injection
+7. Unbrick Evil Crow Keylogger with Hall Sensor
+
 # Disclaimer
 
 Evil Crow Keylogger is a physical keylogger device for professionals and cybersecurity enthusiasts.
@@ -76,6 +90,31 @@ Now you can flash Atmega32u4 and ESP32-PICO in different ways:
 * Automatic installation with ESP Flasher
 * Manual installation
 
+## Layout support
+
+Evil Crow Keylogger supports several layouts, the en_us layout is by default.
+
+Set up a new layout:
+
+* 0.- Open Keyboard/src/Keyboard.cpp with a text editor
+
+* 1.- Change #define kbd_en_us to another layout. Example: #define kbd_es_es
+
+You can use:
+- kbd_be_be
+- kbd_cz_cz
+- kbd_da_dk
+- kbd_de_de
+- kbd_en_us
+- kbd_es_es
+- kbd_fi_fi
+- kbd_fr_fr
+- kbd_it_it
+- kbd_pt_pt
+- kbd_tr_tr
+
+* 2.- Save and close Keyboard.cpp
+
 ## Automatic installation
 
 1. Install Platformio Core: https://docs.platformio.org/en/latest/core/index.html
@@ -119,31 +158,6 @@ Buy ESP Flasher: https://www.aliexpress.com/item/32556128986.html
 * 5.- Copy the Keyboard and USB Host Shield libraries included in this repository to your Arduino library directory. 
 
 **NOTE:** The Keyboard library included in this repository has been modified, EvilCrow Keylogger needs this library to work.
-
-### Layout support
-
-Evil Crow Keylogger supports several layouts, the en_us layout is by default.
-
-Set up a new layout:
-
-* 0.- Open Keyboard/src/Keyboard.cpp with a text editor
-
-* 1.- Change #define kbd_en_us to another layout. Example: #define kbd_es_es
-
-You can use:
-- kbd_be_be
-- kbd_cz_cz
-- kbd_da_dk
-- kbd_de_de
-- kbd_en_us
-- kbd_es_es
-- kbd_fi_fi
-- kbd_fr_fr
-- kbd_it_it
-- kbd_pt_pt
-- kbd_tr_tr
-
-* 2.- Save and close Keyboard.cpp
 
 ### Upload the ESP32 code
 
@@ -206,7 +220,7 @@ Evil Crow Keylogger also stores the log on the Micro SD card.
 
 **File:** log.txt
 
-## Keystroke Injection
+# Keystroke Injection
 
 Keystroke injection attacks can me executed by navigating to the Live Payload tab. There you can write and run keystroke injection payloads written in simple script.
 
