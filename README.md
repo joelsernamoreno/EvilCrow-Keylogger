@@ -3,8 +3,6 @@ WiFi keylogger with Micro SD slot, based on the Atmega32U4 microcontroller and t
 
 ![EvilCrow](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/Logo1.jpg)
 
-
-
 **Idea, development and implementation:** Joel Serna (@JoelSernaMoreno) & Ernesto Sánchez (@ernesto_xload)
 
 **Collaborators:**  Ignacio Díaz (@Nacon_96) / Forensic&Security (@ForensicSec)
@@ -16,10 +14,18 @@ You can invite me for a coffee to further develop Low-Cost hacking devices. If y
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E614OA5)
 
-**For Sale at:**
+**Available with April Brother (shipping from China):**
 
-* [Aliexpress Shop](https://www.aliexpress.us/item/3256806627810074.html)
-* [Tindie Shop](https://www.tindie.com/products/aprbrother/evilcrow-keylogger/)
+* Aliexpress: https://www.aliexpress.us/item/3256806627810074.html
+* Tindie: https://www.tindie.com/products/aprbrother/evilcrow-keylogger/
+
+**Available with SAPSAN Cybersec & Military (shipping from EU, Poland):**
+
+* https://sapsan-sklep.pl/en/products/evilcrow-hardware-keylogger
+
+**Available with KSEC KSEC Worldwide (shipping from the United Kingdom):**
+
+* https://labs.ksec.co.uk/product/evilcrow-keylogger-wifi-keylogger-with-micro-sd-slot/
 
 **Summary:**
 1. Disclaimer
