@@ -27,6 +27,10 @@ You can invite me for a coffee to further develop Low-Cost hacking devices. If y
 
 * https://labs.ksec.co.uk/product/evilcrow-keylogger-wifi-keylogger-with-micro-sd-slot/
 
+**Available with Tienda Espía (shipping from Mexico):**
+
+* https://tiendaespia.com.mx/producto/evil-crow-keylogger-wifi/
+
 **Summary:**
 1. Disclaimer
 2. Introduction
