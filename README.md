@@ -40,11 +40,13 @@ You can invite me for a coffee to further develop Low-Cost hacking devices. If y
 	* Automatic installation
 	* Automatic installation with ESP Flasher
 	* Manual installation
-
-4. First steps with Evil Crow Keylogger
+4. Firmware
+	* First steps with Evil Crow Keylogger
+	* Home
+	* Log Viewer
+	* Config
 5. Use the Micro SD Slot
-6. Keystroke Injection
-7. Unbrick Evil Crow Keylogger with Hall Sensor
+6. Unbrick Evil Crow Keylogger with Hall Sensor
 
 # Disclaimer
 
@@ -207,7 +209,7 @@ Here you can see all the pins corresponding to ESP32:
 
 * Done!
 
-# First steps with Evil Crow Keylogger
+## First steps with Evil Crow Keylogger
 
 * 0.- Connect a keyboard to the Evil Crow Keylogger USB host port.
 
@@ -215,47 +217,49 @@ Here you can see all the pins corresponding to ESP32:
 
 * 2.- Open a notepad and type Hello World with the keyboard connected to the keylogger
 
-* 3.- Visualize the wifi networks around you and connect to the Keylogger (default SSID: Keylogger).
+* 3.- Visualize the wifi networks around you and connect to the Keylogger (default SSID: Evil Crow Keylogger).
 
-* 4.- Enter the password for the wifi network (default password: 123456789).
+* 4.- Enter the password for the wifi network (default password: 123456789ECKeylogger).
 
-* 5.- Open a browser and access the web panel (default IP: 192.168.4.1).
+* 5.- Open a browser and access the web panel (http://192.168.4.1/ or http://evilcrow-keylogger.local/).
 
-* 6.- Click on the View Log option
+* 6.- Click on the Log Viewer option
 
-![Log](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/log.jpg)
+![Log](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/log.png)
 
-# Use the Micro SD Slot
+**Note:** If you cannot access the web panel, use the default IP address (http://192.168.4.1) or follow below steps **only if you are running Linux OS:**
+ * check if avahi-deamon is installed and running on your PC. You can do this with executing "sudo systemctl status avahi-daemon" in terminal
+ * If service is not running, install it using your package manager (apt, yum, dnf, Packman, rpm,...)
+ * After successful installation, start avahi-daemon service with "sudo systemctl start avahi-daemon && sudo systemctl enable avahi-daemon"
+ * In case evilcrow-keylogger.local is still not reachable, use http://192.168.4.1/.
+ 
+## Home
+
+The Home page shows interesting information about the device.
+
+![Home](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/main/images/home.png)
+
+## Log Viewer
+
+![LogViewer](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/main/images/log-viewer.png)
+
+## Config
+
+The Config page allows you to change the Wi-Fi configuration.
+
+**NOTE:** Evil Crow Keylogger is configured in AP MODE. You can change the ssid and password from the web panel.
+
+The changes will be stored in the device, every time you restart Evil Crow Keylogger the new Wi-Fi settings will be applied. If you want to return to the default settings, you can delete the stored Wi-Fi configuration from the web panel.
+
+![CONFIG](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/main/images/configwifi.png)
+
+## Use the Micro SD Slot
 
 Evil Crow Keylogger also stores the log on the Micro SD card.
 
-**File:** log.txt
+**File:** logs.txt
 
-# Keystroke Injection
-
-Keystroke injection attacks can me executed by navigating to the Live Payload tab. There you can write and run keystroke injection payloads written in simple script.
-
-The parameters allowed to create payloads are the following:
-
-* **print:** Example print Hello World
-
-* **println:** Example println Hello World
-
-* **press:** Example press 131 (This is the GUI key)
-
-* **release:** Example release
-
-* **rawpress:** Example rawpress 176 (This is the RETURN key)
-
-* **delay:** Example delay 3000
-
-To press more keys and modifiers you can use the following link: https://www.arduino.cc/reference/es/language/functions/usb/keyboard/keyboardmodifiers/
-
-**Payload example:**
-
-![Log](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/payload.PNG)
-
-# Unbrick Evil Crow Keylogger with Hall Sensor
+## Unbrick Evil Crow Keylogger with Hall Sensor
 
 First, you’ll need to set the serial port to the bootloader. But that port is only visible when the board is in bootloader mode, so pull the reset line low twice quickly to invoke the bootloader reset feature. You can quickly press the reset button** twice. While the Evil Crow Keylogger is in the bootloader mode, change the ‘Tools > Serial Port’ menu to the bootloader COM port. Quick! You’ve only got eight seconds.
 

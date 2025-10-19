@@ -1,0 +1,175 @@
+const char Config[] PROGMEM = R"=====(
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>EvilCrow-Keylogger</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="style.css">
+  <script src="javascript.js"></script>
+  <style>
+    .logo-with-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="global-toast" class="toast-container"></div>
+
+  <!-- Menu -->
+  <nav id='menu'>
+    <input type='checkbox' id='responsive-menu'><label for='responsive-menu'></label>
+    <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/viewlog">Log Viewer</a></li>
+            <li><a href="/config">Config</a></li>
+    </ul>
+  </nav>
+
+  <div class="logo-with-status">
+    <div class="keylogger-logo">CONFIGURATION</div>
+    <span class="status-indicator status-offline"></span>
+  </div>
+
+  <div class="view-container">
+
+    <!-- Wi-Fi Config -->
+    <form id="wifiForm">
+      <div class="section-header">WIFI</div>
+
+      <div class="form-group">
+        <label for="ssid">Wi-Fi SSID:</label>
+        <input type="text" id="ssid" name="ssid" required class="terminal-style single-line-input">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Wi-Fi Password:</label>
+        <input type="password" id="password" name="password" required class="terminal-style single-line-input">
+      </div>
+
+      <button type="button" onclick="applyWiFi()">Apply Wi-Fi</button>
+      <button type="button" name="deleteWifiButton" onclick="deleteWiFiConfig()">Delete Wi-Fi Config</button>
+    </form>
+
+    <hr>
+
+    <div class="config-buttons-container">
+      <button type="button" name="clearCacheButton" onclick="clearCache()">Clear Device Cache</button>
+      <button type="button" name="rebootDeviceButton" onclick="rebootDevice()">Reboot Device</button>
+    </div>
+
+    <p class="payload-desc">Reload of CSS/JS files.</p>
+  </div>
+
+  <script>
+    function applyWiFi() {
+      const ssid = document.getElementById('ssid').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!ssid || !password) {
+        showMessage('error', 'SSID and password are required');
+        return;
+      }
+
+      fetch('/updatewifi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ ssid, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showMessage('success', data.message);
+        } else {
+          showMessage('error', data.message);
+        }
+      })
+      .catch(error => {
+        showMessage('error', 'Error applying Wi-Fi settings');
+        console.error('Error:', error);
+      });
+    }
+
+    function deleteWiFiConfig() {
+      if (confirm('Are you sure you want to delete the Wi-Fi configuration?')) {
+        fetch('/deletewificonfig', { method: 'POST' })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              showMessage('success', data.message || 'Wi-Fi configuration deleted!');
+            } else {
+              showMessage('error', data.message || 'Error deleting Wi-Fi config');
+            }
+          })
+          .catch(error => {
+            showMessage('error', 'Error deleting Wi-Fi configuration: ' + error.message);
+          });
+      }
+    }
+
+    function clearCache() {
+      const links = document.querySelectorAll('link[rel="stylesheet"], script[src]');
+      links.forEach(link => {
+        const url = new URL(link.href || link.src);
+        url.searchParams.set('nocache', Date.now());
+        link.href = url.toString();
+      });
+      showMessage('success', 'Cache cleared! Refreshing...');
+      setTimeout(() => location.reload(true), 1000);
+    }
+
+    function rebootDevice() {
+      if (confirm('Are you sure you want to reboot the device?')) {
+        showMessage('info', 'Device rebooting... Please wait');
+        fetch('/reboot', { method: 'POST' }).catch(() => {
+          console.log('Evil Crow Keylogger is rebooting, ignoring fetch error');
+        });
+      }
+    }
+
+    function showMessage(type, text) {
+      const container = document.getElementById('global-toast');
+      const toast = document.createElement('div');
+      toast.className = `toast-message ${type}`;
+      toast.textContent = text;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function checkConnection() {
+      fetch('/connectioncheck')
+        .then(response => response.json())
+        .then(data => {
+          const indicator = document.querySelector('.status-indicator');
+          if (indicator) {
+            indicator.classList.remove('status-offline', 'status-online');
+            if (data.status === 'ok') {
+              indicator.classList.add('status-online');
+            } else {
+              indicator.classList.add('status-offline');
+            }
+          }
+        })
+        .catch(error => {
+          const indicator = document.querySelector('.status-indicator');
+          if (indicator) {
+            indicator.classList.remove('status-offline', 'status-online');
+            indicator.classList.add('status-offline');
+          }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkConnection();
+      setInterval(checkConnection, 5000);
+    });
+  </script>
+</body>
+</html>
+)=====";
