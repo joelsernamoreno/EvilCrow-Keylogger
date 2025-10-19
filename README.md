@@ -223,10 +223,6 @@ Here you can see all the pins corresponding to ESP32:
 
 * 5.- Open a browser and access the web panel (http://192.168.4.1/ or http://evilcrow-keylogger.local/).
 
-* 6.- Click on the Log Viewer option
-
-![Log](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/log.png)
-
 **Note:** If you cannot access the web panel, use the default IP address (http://192.168.4.1) or follow below steps **only if you are running Linux OS:**
  * check if avahi-deamon is installed and running on your PC. You can do this with executing "sudo systemctl status avahi-daemon" in terminal
  * If service is not running, install it using your package manager (apt, yum, dnf, Packman, rpm,...)
@@ -237,11 +233,11 @@ Here you can see all the pins corresponding to ESP32:
 
 The Home page shows interesting information about the device.
 
-![Home](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/main/images/home.png)
+![Home](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/home.png)
 
 ## Log Viewer
 
-![LogViewer](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/main/images/log-viewer.png)
+![LogViewer](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/log-viewer.png)
 
 ## Config
 
@@ -251,7 +247,7 @@ The Config page allows you to change the Wi-Fi configuration.
 
 The changes will be stored in the device, every time you restart Evil Crow Keylogger the new Wi-Fi settings will be applied. If you want to return to the default settings, you can delete the stored Wi-Fi configuration from the web panel.
 
-![CONFIG](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/main/images/configwifi.png)
+![CONFIG](https://github.com/joelsernamoreno/EvilCrow-Keylogger/blob/master/images/configwifi.png)
 
 ## Use the Micro SD Slot
 
