@@ -17,7 +17,7 @@
 
 extern const uint8_t _asciimap[] PROGMEM;
 
-//modifiers
+// modifier states
 int leftctrl_status=0;
 int leftshift_status=0;
 int leftalt_status=0;
@@ -46,6 +46,7 @@ void SetModifiers(void) {
 
 void SetModifiersArd(void) {
     modifiersard=0;
+    // Arduino modifier mapping (SHIFT, ALTGR)
     if (leftshift_status) modifiersard |= SHIFT;
     if (rightalt_status) modifiersard |= ALTGR;   
 }
@@ -60,7 +61,7 @@ class KbdRptParser : public KeyboardReportParser {
     void OnKeyPressed(uint8_t key);
 };
 
-// NumPad 0~9 HID Code 对应数字
+// NumPad 0~9 HID Code mapped to digits
 char NumpadChar(uint8_t key) {
     switch(key) {
         case 0x62: return '0'; // NumPad 0
@@ -86,7 +87,7 @@ void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
 
     bool written = false;
 
-    // 1️⃣ 主键盘 ASCII
+    // 1️⃣ Main Keyboard ASCII mapping
     for (int i = 0; i < 256; i++) {
         if (pgm_read_byte(_asciimap + i) == key_modifier) {
             SDlog.write(i);
@@ -96,7 +97,7 @@ void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
         }
     }
 
-    // 2️⃣ NumPad 无脑记录数字
+    // 2️⃣ NumPad digits fallback logging
     if (!written) {
         char num = NumpadChar(key);
         if (num != 0) {
