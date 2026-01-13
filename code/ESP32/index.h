@@ -31,7 +31,7 @@ const char Index[] PROGMEM = R"=====(
                 <strong>Connection Status: <span class="status-indicator status-offline"></span></strong>
             </div>
             <div class="stat-group">
-                <strong>Firmware:</strong> <span id="firmware">v1.0</span>
+                <strong>Firmware:</strong> <span id="firmware">v1.1</span>
             </div>
             <div class="stat-group">
                 <strong>Uptime:</strong> <span id="uptime">N/A</span>
